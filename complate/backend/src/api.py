@@ -62,25 +62,21 @@ def drink_details(jwt_token):
     returns status code 200 and json {"success": True, "drinks": drink} where drink an array containing only the newly created drink
         or appropriate status code indicating reason for failure
 '''
-@app.route('/drinks' ,methods=['POST'])
+@app.route("/drinks", methods=['POST'])
 @requires_auth('post:drinks')
 def new_drinks(jwt_token):
     body = request.get_json()
-    newt = body.get('title',None)
-    newr = body.get('recipe',None)
-    if not newt:
-      abort(422)
-    if not newr:
-      abort(422)
+    newt = body.get('title')
+    newr = body.get('recipe')
 
     try:
-        new_drink(title = newt , recipe = json.dump(newr))
-        new_drinks.insert
-        selection = Drink.query.filter_by(new_drink.id).first()
+        new_drink = Drink(title = newt , recipe = json.dumps(newr))
+        new_drink.insert()
 
-        return jsonify ({"success": True, "drinks": [drink.long() for drink in selection]})
+        return jsonify ({"success": True, "drinks": [new_drink.long()]})
     except:
         abort(422)
+
 '''
 @TODO implement endpoint
     PATCH /drinks/<id>
@@ -123,17 +119,17 @@ def edit_drink(jwt_token,id):
     returns status code 200 and json {"success": True, "delete": id} where id is the id of the deleted record
         or appropriate status code indicating reason for failure
 '''
-@app.route("/drinks/<drink_id>", methods=['DELETE'])
-@requires_auth("delete:drinks")
-def delete_drinks(token, drink_id):
-    drink_data = Drink.query.get(drink_id)
-    Drink.delete(drink_data)
-    drinks = list(map(Drink.long, Drink.query.all()))
-    result = {
-        "success": True,
-        "drinks": drinks
-    }
-    return jsonify(result)
+@app.route('/drinks/<id>' ,methods=['DELETE'])
+@requires_auth('delete:drinks')
+def remvoe_drink(jwt_token,id):
+    drink = Drink.query.get(id)
+    if drink is None:
+        abort(404)
+    try:
+        drink.delete()
+        return jsonify({"success": True, "delete": id})
+    except:
+        abort(422)
 
 ## Error Handling
 '''

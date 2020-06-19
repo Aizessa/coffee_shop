@@ -1,0 +1,30 @@
+https://github.com/udacity/FSND/blob/master/BasicFlaskAuth/app.py
+
+check_permissions:
+def check_permissions(permission, payload):
+    if 'permissions' not in payload:
+                        raise AuthError({
+                            'code': 'invalid_claims',
+                            'description': 'Permissions not included in JWT.'
+                        }, 400)
+
+    if permission not in payload['permissions']:
+        raise AuthError({
+            'code': 'unauthorized',
+            'description': 'Permission not found.'
+        }, 403)
+    return True
+
+From udacity lecture FSND.
+
+
+if you using windows the command ionic serve won't work you need to use 
+npm install -g @ionic/cli native-run cordova-res 
+then you can run ionic serve
+https://ionicframework.com/docs/angular/your-first-app
+
+json.dumbs
+https://docs.python.org/3/library/json.html
+https://docs.python.org/2/library/json.html
+https://www.w3schools.com/python/python_json.asp  << the best
+
