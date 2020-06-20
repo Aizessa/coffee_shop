@@ -55,6 +55,24 @@ class Drink(db.Model):
             'recipe': short_recipe
         }
 
+    #This code will work your code was not working right i tried this code and it did work ,
+    # this is not my code but i had errors in your code i thought it was from me
+    '''
+    def short(self):
+        print(json.loads(self.recipe))
+        short_recipe = {}
+        for r in json.loads(self.recipe):
+            if r == 'color' or r == 'parts':
+                short_recipe[r] = json.loads(self.recipe)[r]
+        return {
+            'id': self.id,
+            'title': self.title,
+            'recipe': short_recipe
+        }
+    '''
+
+
+    
     '''
     long()
         long form representation of the Drink model

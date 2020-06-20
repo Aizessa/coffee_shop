@@ -29,9 +29,9 @@ db_drop_and_create_all()
 '''
 @app.route('/drinks') #by defualt it is a GET
 def get_drinks():
-    drink = list(map(Drink.short, Drink.query.all()))
+    drink = Drink.query.all()
     try:
-        return jsonify({"success": True, "drinks": drink})
+        return jsonify({"success": True, "drinks": [drinks.short() for drinks in drink]})
     except:
         abort(404)
 
@@ -92,20 +92,22 @@ def new_drinks(jwt_token):
 @requires_auth('patch:drinks')
 def edit_drink(jwt_token,id):
     drink = Drink.query.get(id)
-    if not drink:
+    if drink is None:
         abort(404)
     else:
         try:
             body = request.get_json()
-            if title in body:
-                edit_title = body.get('title')
+
+            edit_title = body.get('title')
+            if edit_title:
                 drink.title = edit_title
-            if recipe in body:
-                edit_recipe = body.get('recipe')
+
+            edit_recipe = body.get('recipe')
+            if edit_recipe:
                 drink.recipe = edit_recipe
 
             drink.update()
-            return jsonify({"success": True, "drinks": [drink.long]})
+            return jsonify({"success": True, "drinks": [drink.long()]})
         except:
             abort(422)
 
