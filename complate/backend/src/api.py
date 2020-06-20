@@ -16,15 +16,15 @@ CORS(app)
 !! NOTE THIS WILL DROP ALL RECORDS AND START YOUR DB FROM SCRATCH
 !! NOTE THIS MUST BE UNCOMMENTED ON FIRST RUN
 '''
-db_drop_and_create_all()
+#db_drop_and_create_all()
 
-## ROUTES
+# ROUTES
 '''
 @TODO implement endpoint
     GET /drinks
         it should be a public endpoint
         it should contain only the drink.short() data representation
-    returns status code 200 and json {"success": True, "drinks": drinks} where drinks is the list of drinks
+        returns status code 200 and json {"success": True, "drinks": drinks} where drinks is the list of drinks
         or appropriate status code indicating reason for failure
 '''
 @app.route('/drinks') #by defualt it is a GET
@@ -41,7 +41,7 @@ def get_drinks():
     GET /drinks-detail
         it should require the 'get:drinks-detail' permission
         it should contain the drink.long() data representation
-    returns status code 200 and json {"success": True, "drinks": drinks} where drinks is the list of drinks
+        returns status code 200 and json {"success": True, "drinks": drinks} where drinks is the list of drinks
         or appropriate status code indicating reason for failure
 '''
 @app.route('/drinks-detail')
@@ -59,7 +59,7 @@ def drink_details(jwt_token):
         it should create a new row in the drinks table
         it should require the 'post:drinks' permission
         it should contain the drink.long() data representation
-    returns status code 200 and json {"success": True, "drinks": drink} where drink an array containing only the newly created drink
+        returns status code 200 and json {"success": True, "drinks": drink} where drink an array containing only the newly created drink
         or appropriate status code indicating reason for failure
 '''
 @app.route("/drinks", methods=['POST'])
@@ -73,7 +73,7 @@ def new_drinks(jwt_token):
         new_drink = Drink(title = newt , recipe = json.dumps(newr))
         new_drink.insert()
 
-        return jsonify ({"success": True, "drinks": [new_drink.long()]})
+        return jsonify({"success": True, "drinks": [new_drink.long()]})
     except:
         abort(422)
 
@@ -85,7 +85,7 @@ def new_drinks(jwt_token):
         it should update the corresponding row for <id>
         it should require the 'patch:drinks' permission
         it should contain the drink.long() data representation
-    returns status code 200 and json {"success": True, "drinks": drink} where drink an array containing only the updated drink
+        returns status code 200 and json {"success": True, "drinks": drink} where drink an array containing only the updated drink
         or appropriate status code indicating reason for failure
 '''
 @app.route('/drinks/<id>', methods=['PATCH'])
@@ -118,7 +118,7 @@ def edit_drink(jwt_token,id):
         it should respond with a 404 error if <id> is not found
         it should delete the corresponding row for <id>
         it should require the 'delete:drinks' permission
-    returns status code 200 and json {"success": True, "delete": id} where id is the id of the deleted record
+        returns status code 200 and json {"success": True, "delete": id} where id is the id of the deleted record
         or appropriate status code indicating reason for failure
 '''
 @app.route('/drinks/<id>' ,methods=['DELETE'])
@@ -181,10 +181,11 @@ def bad_request(error):
     error handler should conform to general task above 
 '''
 
+
 @app.errorhandler(AuthError)
 def auth_error_handler(e):
     return jsonify({
         "success": False, 
         "error": e.status_code,
         "message": e.error
-        }),401
+        }), 401
